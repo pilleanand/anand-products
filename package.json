@@ -16,6 +16,7 @@
     "lodash": "4.17.21",
     "memoizee": "0.4.15",
     "moment": "2.29.1",
+    "moment-timezone": "0.5.33",
     "native-base": "2.15.2",
     "prop-types": "15.7.2",
     "react": "16.13.1",
