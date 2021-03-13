@@ -103,4 +103,4 @@ class NetworkHandler {
 }
 
 const requestHandler = new NetworkHandler();
-export const DTNetworkHandler = requestHandler;
+export const MyNetworkHandler = requestHandler;
