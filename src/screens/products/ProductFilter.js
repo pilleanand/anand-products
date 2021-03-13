@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   containerViewStyle: {},
   modalInnerViewStyle: {
     marginTop: Platform.select({ android: 80, ios: 100 }),
-    marginBottom: Platform.select({ android: 20, ios: 20 }),
+    marginBottom: 20,
     marginHorizontal: Platform.select({ android: 20, ios: 30 }),
     backgroundColor: WHITE_COLOR,
     borderRadius: 20,
