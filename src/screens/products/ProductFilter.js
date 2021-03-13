@@ -16,7 +16,7 @@ class ProductFilter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: true,
+      showModal: false,
       categorySearchText: "",
       selectedCategories: []
     }
@@ -60,18 +60,18 @@ class ProductFilter extends Component {
 
   getCategoriesListView = () => {
     let { selectedCategories } = this.state;
-    return this.props.allCategories.map((category, ) => {
+    return this.props.allCategories.map((category,) => {
       let isAlreadySelected = lodash.find(selectedCategories, { id: category.id });
       return (
         <ListItem key={`category_key${category.id}`} onPress={() => { this.onCheckboxPress(category, 'listItem') }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
+          <View style={styles.checkboxViewStyle}>
             <CheckBox
               onCheckColor="blue"
               value={isAlreadySelected ? true : false}
-              style={{ alignSelf: 'center', width: 20, height: 20 }}
+              style={styles.checkboxStyle}
               boxType='square'
             />
-            <Text style={{ color: '#333', fontSize: 16, marginLeft: 10 }}>{category.name}</Text>
+            <Text style={styles.categoryNameTxtStyle}>{category.name}</Text>
           </View>
         </ListItem>
       )
@@ -85,7 +85,7 @@ class ProductFilter extends Component {
       transparent={true}
       onRequestClose={this.onModalClosePress}>
       <View style={styles.modalInnerViewStyle}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={styles.inputBoxRowStyle}>
           <InputBox
             name="placeholder"
             value={this.state.categorySearchText}
@@ -94,7 +94,7 @@ class ProductFilter extends Component {
             keyboardType='default'
             returnKeyType="done"
           />
-          <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+          <View style={styles.doneIconContainerViewStyle}>
             <FontAwesome onPress={this.onModalClosePress}
               name='check'
               size={35}
@@ -102,16 +102,16 @@ class ProductFilter extends Component {
             />
           </View>
         </View>
-        <View style={{ flexDirection: 'row', marginTop: 10, marginHorizontal: 10 }}>
-          <View style={{ flex: 1, alignItems: 'flex-start' }}>
-            <Text onPress={this.onSelectAllTextPress} style={{ color: 'blue', fontSize: 16 }}>SELECT ALL</Text>
+        <View style={styles.seeClearRowStyle}>
+          <View style={styles.seeAllViewStyle}>
+            <Text onPress={this.onSelectAllTextPress} style={styles.seeAllTxtStyle}>SELECT ALL</Text>
           </View>
-          <View style={{ flex: 1, alignItems: 'flex-end' }}>
-            <Text onPress={this.onClearTextPress} style={{ color: 'red', fontSize: 16 }}>CLEAR</Text>
+          <View style={styles.clearViewStyle}>
+            <Text onPress={this.onClearTextPress} style={styles.clearTxtStyle}>CLEAR</Text>
           </View>
         </View>
         <ScrollView>
-          <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+          <View style={styles.categoriesConatainerViewStyle}>
             {this.getCategoriesListView()}
           </View>
         </ScrollView>
@@ -122,10 +122,10 @@ class ProductFilter extends Component {
   render() {
     return (
       <View style={styles.containerViewStyle}>
-        <View style={{ alignItems: 'flex-end', flex: 1, flexDirection: 'row-reverse', marginBottom: 50, marginTop: 15 }}>
-          <Button iconLeft dark onPress={this.openFilterModal} style={{ marginRight: 20, paddingHorizontal: 20 }}>
-            <Ionicons name='filter' size={27} color='white' fontSize={30} />
-            <Text style={{ color: 'white', fontSize: 20, marginLeft: 5 }}>Filter</Text>
+        <View style={styles.filterBtnContainerViewStyle}>
+          <Button iconLeft dark onPress={this.openFilterModal} style={styles.filterBtnStyle}>
+            <Ionicons name='filter' size={27} color='white' />
+            <Text style={styles.filterBtnLabelStyle}>Filter</Text>
           </Button>
         </View>
         {this.getModalViewWithCategories()}
@@ -136,7 +136,7 @@ class ProductFilter extends Component {
 
 const styles = StyleSheet.create({
   containerViewStyle: {},
-  modalInnerViewStyle:{
+  modalInnerViewStyle: {
     marginTop: Platform.select({ android: 80, ios: 100 }),
     marginBottom: Platform.select({ android: 20, ios: 40 }),
     marginHorizontal: Platform.select({ android: 20, ios: 30 }),
@@ -151,6 +151,70 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5
+  },
+  filterBtnContainerViewStyle: {
+    alignItems: 'flex-end',
+    flex: 1,
+    flexDirection: 'row-reverse',
+    marginBottom: 50,
+    marginTop: 15
+  },
+  filterBtnStyle: {
+    marginRight: 20,
+    paddingHorizontal: 20
+  },
+  filterBtnLabelStyle: {
+    color: 'white',
+    fontSize: 20,
+    marginLeft: 5
+  },
+  inputBoxRowStyle: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  doneIconContainerViewStyle: {
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end'
+  },
+  seeClearRowStyle: {
+    flexDirection: 'row',
+    marginTop: 10, marginHorizontal: 10
+  },
+  seeAllViewStyle: {
+    flex: 1,
+    alignItems: 'flex-start'
+  },
+  seeAllTxtStyle: {
+    color: 'blue',
+    fontSize: 16,
+    fontWeight: '500'
+  },
+  clearViewStyle: {
+    flex: 1,
+    alignItems: 'flex-end'
+  },
+  clearTxtStyle: {
+    color: 'red',
+    fontSize: 16, fontWeight: '500'
+  },
+  categoriesConatainerViewStyle: {
+    marginTop: 20,
+    marginHorizontal: 10
+  },
+  checkboxViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10
+  },
+  checkboxStyle: {
+    alignSelf: 'center',
+    width: 20,
+    height: 20
+  },
+  categoryNameTxtStyle: {
+    color: '#333',
+    fontSize: 16,
+    marginLeft: 10
   }
 });
 
