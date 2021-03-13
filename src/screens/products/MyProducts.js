@@ -63,7 +63,6 @@ class MyProducts extends Component {
   }
 
   render(){
-    console.log('allCategories---',this.props.allCategories)
     // console.log('products---',this.props.products)
 
     return (
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ product }) => ({
-  products: product.totalProducts,
+  products: product.filteredProducts,
   showProgress: product.showProgress,
   refresh: product.refresh,
   allowFetch: product.allowFetch,

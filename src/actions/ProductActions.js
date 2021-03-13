@@ -5,7 +5,8 @@ import {
   FETCH_CATEGORIES_REQUEST,
   FETCH_CATEGORIES_REQUEST_SUCCESS,
   FETCH_CATEGORIES_REQUEST_FAIL,
-  FILTER_CATEGORIES_BY_SEARCH_TERM
+  FILTER_CATEGORIES_BY_SEARCH_TERM,
+  FILTER_PRODUCTS_BY_SELECTED_CATEGORIES
 } from "../constants/ProductActionTypes";
 
 export const fetchProductsWithPaginationRequestAction = (pageNumber) => ({
@@ -38,4 +39,9 @@ export const fetchCategoriesRequestFailureAction = (error) => ({
 export const filterCategoriesBySearchSearchTermAction = (searchTerm) => ({
   type: FILTER_CATEGORIES_BY_SEARCH_TERM,
   payload: searchTerm
+});
+
+export const filterProductsByCategoriesSelectedAction = (categories) => ({
+  type: FILTER_PRODUCTS_BY_SELECTED_CATEGORIES,
+  payload: categories
 });

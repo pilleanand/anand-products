@@ -4,14 +4,14 @@ import {
   FETCH_PRODUCTS_PAGINATION_REQUEST,
   FETCH_PRODUCTS_PAGINATION_REQUEST_FAIL,
   FETCH_PRODUCTS_PAGINATION_REQUEST_SUCCESS,
-  FILTER_CATEGORIES_BY_SEARCH_TERM
+  FILTER_CATEGORIES_BY_SEARCH_TERM,
+  FILTER_PRODUCTS_BY_SELECTED_CATEGORIES
 } from "../constants/ProductActionTypes";
-import { filterCategoriesBySearchSearchTerm } from '../helpers/Product.helpers';
+import { filterCategoriesBySearchSearchTerm, filterProductsBySelectedCategories } from '../helpers/Product.helpers';
 
 const INITIAL_STATE = {
   totalProducts: [],
   filteredProducts: [],
-  selectedcategoryFilters: [],
   fliteredCategoriesByText: [],
   allCategories: [],
   showProgress: false,
@@ -39,16 +39,19 @@ export default (state = INITIAL_STATE, action) => {
             ...state,
             showProgress: false,
             totalProducts: products,
+            filteredProducts: products,
             refresh: false,
             allowFetch,
           };
         }
         //Handling result when paginated ie, when pagenumber is more than 0, need to concat the result
         else if (pageNumber > 1) {
+          let totalProducts = state.totalProducts.concat(products);
           currentState = {
             ...state,
             showProgress: false,
-            totalProducts: state.totalProducts.concat(products),
+            totalProducts: totalProducts,
+            filteredProducts: totalProducts,
             refresh: false,
             allowFetch
           }
@@ -84,6 +87,13 @@ export default (state = INITIAL_STATE, action) => {
       currentState = {
         ...state,
         fliteredCategoriesByText
+      };
+      break;
+      case FILTER_PRODUCTS_BY_SELECTED_CATEGORIES:
+      let filteredProducts = filterProductsBySelectedCategories(state.totalProducts, action.payload)
+      currentState = {
+        ...state,
+        filteredProducts
       };
       break;
     default: break;

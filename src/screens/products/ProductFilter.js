@@ -1,24 +1,29 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text, Modal, Platform, ScrollView } from 'react-native';
-import { Button } from 'native-base';
+import { Button, ListItem } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux';
+import lodash from 'lodash';
 import InputBox from "../../common/components/InputBox";
-import { filterCategoriesBySearchSearchTermAction } from "../../actions/ProductActions";
+import {
+  filterCategoriesBySearchSearchTermAction,
+  filterProductsByCategoriesSelectedAction
+} from "../../actions/ProductActions";
 
 class ProductFilter extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal: true,
-      categorySearchText: ""
+      categorySearchText: "",
+      selectedCategories: []
     }
   }
 
-
   onModalClosePress = () => {
+    this.props.filterProducts(this.state.selectedCategories);
     this.setState({ showModal: false });
   }
 
@@ -29,6 +34,50 @@ class ProductFilter extends Component {
   onFilterSearchBoxTextChange = (value) => {
     this.props.filterCategories(value);
     this.setState({ categorySearchText: value });
+  }
+
+  onCheckboxPress = (categoryInput) => {
+    console.log('category----', categoryInput);
+    let selectedCategories = this.state.selectedCategories;
+    let isAlreadySelected = lodash.find(selectedCategories, { id: categoryInput.id });
+    if (isAlreadySelected) {
+      selectedCategories = lodash.remove(selectedCategories, {
+        id: categoryInput.id
+      });
+    } else {
+      selectedCategories.push(categoryInput);
+    }
+    console.log('selectedCategories----', selectedCategories);
+    this.setState({ selectedCategories });
+  }
+
+  onSelectAllTextPress = () => {
+    let selectedCategories = this.props.allCategories;
+    this.setState({ selectedCategories });
+  }
+
+  onClearTextPress = () => {
+    this.setState({ selectedCategories: [] });
+  }
+
+  getCategoriesListView = () => {
+    let { selectedCategories } = this.state;
+    return this.props.allCategories.map((category, ) => {
+      let isAlreadySelected = lodash.find(selectedCategories, { id: category.id });
+      return (
+        <ListItem key={`category_key${category.id}`} onPress={() => { this.onCheckboxPress(category, 'listItem') }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
+            <CheckBox
+              onCheckColor="blue"
+              value={isAlreadySelected ? true : false}
+              style={{ alignSelf: 'center', width: 20, height: 20 }}
+              boxType='square'
+            />
+            <Text style={{ color: '#333', fontSize: 16, marginLeft: 10 }}>{category.name}</Text>
+          </View>
+        </ListItem>
+      )
+    });
   }
 
   getModalViewWithCategories = () => (
@@ -57,23 +106,15 @@ class ProductFilter extends Component {
         </View>
         <View style={{ flexDirection: 'row', marginTop: 10, marginHorizontal: 10 }}>
           <View style={{ flex: 1, alignItems: 'flex-start' }}>
-            <Text style={{ color: 'blue', fontSize: 16 }}>SELECT ALL</Text>
+            <Text onPress={this.onSelectAllTextPress} style={{ color: 'blue', fontSize: 16 }}>SELECT ALL</Text>
           </View>
           <View style={{ flex: 1, alignItems: 'flex-end' }}>
-            <Text style={{ color: 'red', fontSize: 16 }}>CLEAR</Text>
+            <Text onPress={this.onClearTextPress} style={{ color: 'red', fontSize: 16 }}>CLEAR</Text>
           </View>
         </View>
         <ScrollView>
           <View style={{ marginTop: 20, marginHorizontal: 10 }}>
-            {this.props.allCategories.map((category, index) => (
-              <View key={`category_key${index}`} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
-                <CheckBox
-                  onCheckColor="blue"
-                  checked={true}
-                />
-                <Text style={{ color: '#333', fontSize: 16, marginLeft: 5 }}>{category.name}</Text>
-              </View>
-            ))}
+            {this.getCategoriesListView()}
           </View>
         </ScrollView>
       </View>
@@ -120,7 +161,8 @@ const mapStateToProps = ({ product }) => ({
 });
 
 const mapDispactchToProps = dispatch => ({
-  filterCategories: (search) => dispatch(filterCategoriesBySearchSearchTermAction(search))
+  filterCategories: (search) => dispatch(filterCategoriesBySearchSearchTermAction(search)),
+  filterProducts: (categories) => dispatch(filterProductsByCategoriesSelectedAction(categories))
 });
 
 export default connect(mapStateToProps, mapDispactchToProps)(ProductFilter);
