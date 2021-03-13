@@ -37,17 +37,15 @@ class ProductFilter extends Component {
   }
 
   onCheckboxPress = (categoryInput) => {
-    console.log('category----', categoryInput);
-    let selectedCategories = this.state.selectedCategories;
+    let { selectedCategories } = this.state;
     let isAlreadySelected = lodash.find(selectedCategories, { id: categoryInput.id });
     if (isAlreadySelected) {
-      selectedCategories = lodash.remove(selectedCategories, {
-        id: categoryInput.id
+      lodash.remove(selectedCategories, {
+        id: isAlreadySelected.id
       });
     } else {
       selectedCategories.push(categoryInput);
     }
-    console.log('selectedCategories----', selectedCategories);
     this.setState({ selectedCategories });
   }
 
