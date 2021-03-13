@@ -5,6 +5,7 @@ import NetInfo from '@react-native-community/netinfo';
 import configureStore from './StoreSetup';
 import { showToastMessage } from '../util/ToastUtility';
 import MyProducts from '../screens/products/MyProducts';
+import { APP_THEME_COLOR } from '../constants/Colors';
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
@@ -27,7 +28,7 @@ function AppContainer(props) {
     });
   }
 
-  const MyStatusBar = ({backgroundColor, ...props}) => (
+  const MyStatusBar = ({ backgroundColor, ...props }) => (
     <View style={[styles.statusBar, { backgroundColor }]}>
       <SafeAreaView>
         <StatusBar translucent backgroundColor={backgroundColor} {...props} />
@@ -38,7 +39,7 @@ function AppContainer(props) {
   return (
     <Provider store={store}>
       <View style={styles.container}>
-        <MyStatusBar backgroundColor="#E75480" barStyle="light-content" />
+        <MyStatusBar backgroundColor={APP_THEME_COLOR} barStyle="light-content" />
         <MyProducts />
       </View>
     </Provider>
