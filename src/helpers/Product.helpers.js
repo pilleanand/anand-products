@@ -5,7 +5,7 @@ export const filterProductsBySelectedCategories = (products, categories) => {
   if (categories.length === 0) {
     return products
   }
- lodash.filter(products, function (product) {
+  lodash.filter(products, function (product) {
     var productMatch = lodash(product.categories).intersectionBy(categories, 'id').map('id').value();
     if (productMatch.length > 0) {
       filteredProducts.push(product);

@@ -7,29 +7,34 @@ import {
   fetchCategoriesRequestAction,
   fetchProductsWithPaginationRequestAction
 } from '../../actions/ProductActions';
+import { APP_THEME_COLOR, WHITE_COLOR } from '../../constants/Colors';
 
 class MyProducts extends PureComponent {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       pageNumber: 1
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.fetchProductsWithPagination(1);
     this.props.fetchCategories();
   }
 
   refreshProducts = () => {
-    this.props.fetchCategories();
+    // pull to refresh is disabled if filters are already allplied
+    if (this.props.fliteredCategoriesByText?.length > 0) {
+      return;
+    }
     const pageNumber = 1;
     this.flatListRef.scrollToOffset({ animated: true, offset: 0 });
     this.setState({
       pageNumber
     }, () => {
       this.fetchProductsWithPagination(1);
+      this.props.fetchCategories();
     });
   }
 
@@ -53,8 +58,8 @@ class MyProducts extends PureComponent {
     }
   }
 
-  renderEachProduct = ({ item, index}) => {
-    return(
+  renderEachProduct = ({ item, index }) => {
+    return (
       <EachProductCard
         item={item}
         index={index}
@@ -62,7 +67,7 @@ class MyProducts extends PureComponent {
     );
   }
 
-  render(){
+  render() {
     return (
       <View style={styles.containerViewStyle}>
         <View style={styles.headerViewStyle}>
@@ -98,10 +103,17 @@ class MyProducts extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-  containerViewStyle: { flex: 1},
-  headerViewStyle: { alignItems: 'center', backgroundColor: '#E75480', padding: 20 },
-  headerTextStyle: { color: 'white', fontSize: 20, fontWeight: 'bold' },
-  flatListStyle:{ flex: 1 },
+  containerViewStyle: { flex: 1 },
+  headerViewStyle: {
+    alignItems: 'center',
+    backgroundColor: APP_THEME_COLOR,
+    padding: 20
+  },
+  headerTextStyle: {
+    color: WHITE_COLOR,
+    fontSize: 20, fontWeight: 'bold'
+  },
+  flatListStyle: { flex: 1 },
   emptyProductsContainerViewStyle: {
     flex: 1,
     justifyContent: 'center',
@@ -115,7 +127,7 @@ const mapStateToProps = ({ product }) => ({
   showProgress: product.showProgress,
   refresh: product.refresh,
   allowFetch: product.allowFetch,
-  allCategories: product.allCategories
+  fliteredCategoriesByText: product.fliteredCategoriesByText,
 });
 
 const mapDispactchToProps = dispatch => ({

@@ -15,7 +15,7 @@ const INITIAL_STATE = {
   totalProducts: [],
   filteredProducts: [],
   fliteredCategoriesByText: [],
-  selectedFilters:[],
+  selectedFilters: [],
   allCategories: [],
   showProgress: false,
   refresh: true,
@@ -87,14 +87,14 @@ export default (state = INITIAL_STATE, action) => {
         fliteredCategoriesByText: action.payload
       };
       break;
-      case FILTER_CATEGORIES_BY_SEARCH_TERM:
-        let fliteredCategoriesByText = filterCategoriesBySearchSearchTerm(state.allCategories, action.payload)
+    case FILTER_CATEGORIES_BY_SEARCH_TERM:
+      let fliteredCategoriesByText = filterCategoriesBySearchSearchTerm(state.allCategories, action.payload)
       currentState = {
         ...state,
         fliteredCategoriesByText
       };
       break;
-      case FILTER_PRODUCTS_BY_SELECTED_CATEGORIES:
+    case FILTER_PRODUCTS_BY_SELECTED_CATEGORIES:
       let filteredProducts = filterProductsBySelectedCategories(state.totalProducts, action.payload)
       currentState = {
         ...state,

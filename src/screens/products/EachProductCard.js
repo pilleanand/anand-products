@@ -4,6 +4,13 @@ import { Card } from 'native-base';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
+import {
+  APP_THEME_COLOR,
+  BLACK_17_COLOR,
+  GREEN_COLOR,
+  DIM_GREY_COLOR,
+  COCONUT_CREAM_COLOR
+} from '../../constants/Colors';
 
 const EachProductCard = (props) => {
   const product = props.item;
@@ -17,11 +24,11 @@ const EachProductCard = (props) => {
           <Text style={styles.productDescriptionTxtStyle} numberOfLines={2} ellipsizeMode='tail'>{product.description}</Text>
           <View style={styles.priceViewStyle}>
             <View style={styles.priceColumnViewStyle}>
-              <EntypoIcon name='price-tag' size={18} color='red' />
+              <EntypoIcon name='price-tag' size={18} color={APP_THEME_COLOR} />
               <Text style={styles.priceTxtStyle}>{product.price}</Text>
             </View>
             <View style={styles.priceColumnViewStyle}>
-              <MaterialIcons name='local-offer' size={18} color='green' />
+              <MaterialIcons name='local-offer' size={18} color={GREEN_COLOR} />
               <Text style={styles.discountTxtStyle}>{product.discount_amount}</Text>
             </View>
           </View>
@@ -33,7 +40,7 @@ const EachProductCard = (props) => {
             <MaterialIcons name='category' size={18} color='grey' />
             <Text style={styles.categoryNameTxtStyle} numberOfLines={1} ellipsizeMode='tail'>{category.name}</Text>
           </View>
-      ))}
+        ))}
       </View>
     </Card>
   );
@@ -42,11 +49,11 @@ const EachProductCard = (props) => {
 const styles = StyleSheet.create({
   conatinerCardStyle: {
     flex: 1,
-    marginRight:20,
+    marginRight: 20,
     marginLeft: 20,
     minHeight: 50,
     marginTop: 10,
-    backgroundColor: '#F7F0D5',
+    backgroundColor: COCONUT_CREAM_COLOR,
     paddingTop: 10,
     paddingBottom: 15,
     paddingHorizontal: 20,
@@ -54,28 +61,28 @@ const styles = StyleSheet.create({
   },
   productNameTxtStyle: {
     fontSize: 16,
-    color:'#111',
+    color: BLACK_17_COLOR,
   },
-  productDescriptionTxtStyle:{
+  productDescriptionTxtStyle: {
     fontSize: 12,
-    marginTop:5,
-    color:'#666',
-    maxWidth:'88%'
+    marginTop: 5,
+    color: DIM_GREY_COLOR,
+    maxWidth: '88%'
   },
-  imageNameRowStyle:{
-    flex:1,
-    flexDirection:'row',
-    alignItems:'flex-start'
+  imageNameRowStyle: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-start'
   },
-  productImgStyle:{
+  productImgStyle: {
     width: 80,
     height: 80,
     borderRadius: 5
   },
-  nameConatinerViewStyle:{
-    marginLeft:10,
-    flexDirection:'column',
-    justifyContent:'flex-start'
+  nameConatinerViewStyle: {
+    marginLeft: 10,
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
   },
   priceViewStyle: {
     marginTop: 5,
@@ -83,27 +90,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center'
   },
-  priceColumnViewStyle:{
+  priceColumnViewStyle: {
     flex: 1,
     flexDirection: 'row'
   },
-  priceTxtStyle:{
+  priceTxtStyle: {
     fontSize: 12,
     marginLeft: 5,
-    color: 'red'
+    color: APP_THEME_COLOR
   },
-  discountTxtStyle:{
+  discountTxtStyle: {
     fontSize: 12,
     marginLeft: 5,
-    color: 'green'
+    color: GREEN_COLOR
   },
-  categoryNameTxtStyle:{
+  categoryNameTxtStyle: {
     fontSize: 12,
     marginLeft: 5,
     color: 'grey'
   },
   categoriesContainerViewStyle: {
-    marginTop:5,
+    marginTop: 5,
   },
 });
 

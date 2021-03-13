@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { View, StyleSheet, Text, Modal, Platform, ScrollView } from 'react-native';
 import { Button, ListItem } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux';
 import lodash from 'lodash';
@@ -11,6 +10,14 @@ import {
   filterCategoriesBySearchSearchTermAction,
   filterProductsByCategoriesSelectedAction
 } from "../../actions/ProductActions";
+import {
+  APP_THEME_COLOR,
+  BLACK_COLOR,
+  GRAY_20_COLOR,
+  RED_COLOR,
+  WHITE_COLOR,
+  BLUE_COLOR
+} from "../../constants/Colors";
 
 class ProductFilter extends Component {
   constructor(props) {
@@ -37,7 +44,6 @@ class ProductFilter extends Component {
   }
 
   onCheckboxPress = (categoryInput) => {
-    console.log('categoryInput0000',categoryInput);
     let { selectedCategories } = this.state;
     let isAlreadySelected = lodash.find(selectedCategories, { id: categoryInput.id });
     if (isAlreadySelected) {
@@ -47,7 +53,6 @@ class ProductFilter extends Component {
     } else {
       selectedCategories.push(categoryInput);
     }
-    console.log('selectedCategories', selectedCategories);
     this.setState({ selectedCategories });
   }
 
@@ -68,7 +73,7 @@ class ProductFilter extends Component {
         <ListItem key={`category_key${category.id}`} onPress={() => { this.onCheckboxPress(category, 'listItem') }}>
           <View style={styles.checkboxViewStyle}>
             <CheckBox
-              onCheckColor="blue"
+              onCheckColor={BLUE_COLOR}
               value={isAlreadySelected ? true : false}
               style={styles.checkboxStyle}
               boxType='square'
@@ -96,20 +101,17 @@ class ProductFilter extends Component {
             keyboardType='default'
             returnKeyType="done"
           />
-          <View style={styles.doneIconContainerViewStyle}>
-            <FontAwesome onPress={this.onModalClosePress}
-              name='check'
-              size={35}
-              color='green'
-            />
-          </View>
         </View>
         <View style={styles.seeClearRowStyle}>
           <View style={styles.seeAllViewStyle}>
-            <Text onPress={this.onSelectAllTextPress} style={styles.seeAllTxtStyle}>SELECT ALL</Text>
+            <Button transparent onPress={this.onSelectAllTextPress} >
+              <Text style={styles.seeAllTxtStyle}>SELECT ALL</Text>
+            </Button>
           </View>
           <View style={styles.clearViewStyle}>
-            <Text onPress={this.onClearTextPress} style={styles.clearTxtStyle}>CLEAR</Text>
+            <Button style={styles.clearBtnStyle} transparent onPress={this.onClearTextPress} >
+              <Text style={styles.clearTxtStyle}>CLEAR</Text>
+            </Button>
           </View>
         </View>
         <ScrollView>
@@ -117,6 +119,11 @@ class ProductFilter extends Component {
             {this.getCategoriesListView()}
           </View>
         </ScrollView>
+        <View style={styles.doneIconContainerViewStyle}>
+          <Button style={styles.applyBtnStyle} onPress={this.onModalClosePress}>
+            <Text style={styles.applyTextStyle}>APPLY</Text>
+          </Button>
+        </View>
       </View>
     </Modal>
   );
@@ -125,7 +132,7 @@ class ProductFilter extends Component {
     return (
       <View style={styles.containerViewStyle}>
         <View style={styles.filterBtnContainerViewStyle}>
-          <Button iconLeft dark onPress={this.openFilterModal} style={styles.filterBtnStyle}>
+          <Button iconLeft onPress={this.openFilterModal} style={styles.filterBtnStyle}>
             <Ionicons name='filter' size={27} color='white' />
             <Text style={styles.filterBtnLabelStyle}>Filter</Text>
           </Button>
@@ -140,12 +147,12 @@ const styles = StyleSheet.create({
   containerViewStyle: {},
   modalInnerViewStyle: {
     marginTop: Platform.select({ android: 80, ios: 100 }),
-    marginBottom: Platform.select({ android: 20, ios: 40 }),
+    marginBottom: Platform.select({ android: 20, ios: 20 }),
     marginHorizontal: Platform.select({ android: 20, ios: 30 }),
-    backgroundColor: "white",
+    backgroundColor: WHITE_COLOR,
     borderRadius: 20,
     flex: 1,
-    shadowColor: "#000",
+    shadowColor: BLACK_COLOR,
     shadowOffset: {
       width: 0,
       height: 2
@@ -162,42 +169,67 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   filterBtnStyle: {
+    backgroundColor: APP_THEME_COLOR,
     marginRight: 20,
     paddingHorizontal: 20
   },
   filterBtnLabelStyle: {
-    color: 'white',
+    color: WHITE_COLOR,
     fontSize: 20,
     marginLeft: 5
   },
   inputBoxRowStyle: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   doneIconContainerViewStyle: {
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end'
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    marginBottom: 10
+  },
+  applyBtnStyle: {
+    alignSelf: 'stretch',
+    borderRadius: 10,
+    backgroundColor: APP_THEME_COLOR,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  applyTextStyle: {
+    color: WHITE_COLOR,
+    fontWeight: '600',
+    textAlign: 'center'
   },
   seeClearRowStyle: {
     flexDirection: 'row',
-    marginTop: 10, marginHorizontal: 10
+    marginTop: 10,
+    marginHorizontal: 20
   },
   seeAllViewStyle: {
     flex: 1,
     alignItems: 'flex-start'
   },
   seeAllTxtStyle: {
-    color: 'blue',
+    color: BLUE_COLOR,
     fontSize: 16,
     fontWeight: '500'
   },
   clearViewStyle: {
     flex: 1,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end'
+  },
+  clearBtnStyle: {
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end'
   },
   clearTxtStyle: {
-    color: 'red',
-    fontSize: 16, fontWeight: '500'
+    color: RED_COLOR,
+    fontSize: 16,
+    fontWeight: '500',
+    textAlign: 'right'
   },
   categoriesConatainerViewStyle: {
     marginTop: 20,
@@ -214,7 +246,7 @@ const styles = StyleSheet.create({
     height: 20
   },
   categoryNameTxtStyle: {
-    color: '#333',
+    color: GRAY_20_COLOR,
     fontSize: 16,
     marginLeft: 10,
     width: '90%'

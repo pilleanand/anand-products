@@ -3,6 +3,7 @@ import { View, Input, Label, Item } from "native-base";
 import { _ScrollView, Text } from "react-native";
 import PropTypes from "prop-types";
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { APPROX_ALTO_COLOR, RED_50_ALTO_COLOR, SNOW_COLOR } from "../../constants/Colors";
 
 const InputBox = (props) => {
   const {
@@ -31,25 +32,24 @@ const InputBox = (props) => {
     <React.Fragment>
       <View
         style={{
-          backgroundColor: hasError ? "#fbe4e4" : "#fffafa",
+          backgroundColor: SNOW_COLOR,
           borderTopRightRadius: 8,
           borderTopLeftRadius: 8,
           marginTop: marginTop,
-          width:'80%'
+          width: '96%'
         }}
       >
         <Item
           style={{
             borderWidth: 2,
-            borderColor:"#ed3332",
+            borderColor: RED_50_ALTO_COLOR,
             height: multiLine && (value || isFocused) ? textAreaHeight : boxHeight,
           }}
         >
           <Label
             style={{
-              color:  "#d9c1c1",
-              paddingLeft: "4%",
-              fontSize:16,
+              color: APPROX_ALTO_COLOR,
+              fontSize: 16,
               letterSpacing: 0.4,
             }}
           >
@@ -81,10 +81,10 @@ const InputBox = (props) => {
             editable={editable}
           />
           <FontAwesome
-              name='search'
-              size={20}
-              color='grey'
-            />
+            name='search'
+            size={20}
+            color='grey'
+          />
         </Item>
       </View>
       {hasError && (
@@ -93,7 +93,7 @@ const InputBox = (props) => {
             paddingLeft: "4.3%",
             fontSize: 12,
             letterSpacing: 0.5,
-            color: "#ed3332",
+            color: RED_50_ALTO_COLOR,
           }}
         >
           {errorLabel}
@@ -129,7 +129,7 @@ InputBox.defaultProps = {
   disabled: false,
   onBlur: () => { },
   setFocus: () => { },
-  placeholder:""
+  placeholder: ""
 };
 
 export default InputBox;
