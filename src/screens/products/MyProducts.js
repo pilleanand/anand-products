@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import EachProductCard from './EachProductCard';
-import { fetchProductsWithPaginationRequestAction } from '../../actions/ProductActions';
+import {
+  fetchCategoriesRequestAction,
+  fetchProductsWithPaginationRequestAction
+} from '../../actions/ProductActions';
 
 class MyProducts extends Component {
 
@@ -15,6 +18,7 @@ class MyProducts extends Component {
 
   componentDidMount(){
     this.fetchProductsWithPagination(1);
+    this.props.fetchCategories();
   }
 
   refreshProducsta = () => {
@@ -48,7 +52,17 @@ class MyProducts extends Component {
     }
   }
 
+  renderEachProduct = ({ item, index}) => {
+    return(
+      <EachProductCard
+        item={item}
+        index={index}
+      />
+    );
+  }
+
   render(){
+    console.log('allCategories---',this.props.allCategories)
     return (
       <FlatList
         data={this.props.products}
@@ -68,7 +82,7 @@ class MyProducts extends Component {
         }
         onRefresh={this.fetchProductsWithPagination}
         refreshing={this.props.refresh}
-        renderItem={EachProductCard}
+        renderItem={this.renderEachProduct}
         ListEmptyComponent={this.renderEmptyProductsList}
         keyExtractor={(item) => `product_key_${(Math.random() * 1000)}`}
       />
@@ -89,11 +103,13 @@ const mapStateToProps = ({ product }) => ({
   products: product.totalProducts,
   showProgress: product.showProgress,
   refresh: product.refresh,
-  allowFetch: product.allowFetch
+  allowFetch: product.allowFetch,
+  allCategories: product.allCategories
 });
 
 const mapDispactchToProps = dispatch => ({
-  fetchProductsWithPagination: (pageNumber) => dispatch(fetchProductsWithPaginationRequestAction(pageNumber))
+  fetchProductsWithPagination: (pageNumber) => dispatch(fetchProductsWithPaginationRequestAction(pageNumber)),
+  fetchCategories: () => dispatch(fetchCategoriesRequestAction())
 });
 
 export default connect(mapStateToProps, mapDispactchToProps)(MyProducts);

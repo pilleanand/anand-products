@@ -1,9 +1,16 @@
-import { FETCH_PRODUCTS_PAGINATION_REQUEST, FETCH_PRODUCTS_PAGINATION_REQUEST_FAIL, FETCH_PRODUCTS_PAGINATION_REQUEST_SUCCESS } from "../constants/ProductActionTypes";
+import lodash from 'lodash';
+import {
+  FETCH_CATEGORIES_REQUEST_SUCCESS,
+  FETCH_PRODUCTS_PAGINATION_REQUEST,
+  FETCH_PRODUCTS_PAGINATION_REQUEST_FAIL,
+  FETCH_PRODUCTS_PAGINATION_REQUEST_SUCCESS
+} from "../constants/ProductActionTypes";
 
 const INITIAL_STATE = {
   totalProducts: [],
   filteredProducts: [],
-  categoryFilters: [],
+  selectedcategoryFilters: [],
+  allCategories: [],
   showProgress: false,
   refresh: true,
   allowFetch: true
@@ -30,9 +37,8 @@ export default (state = INITIAL_STATE, action) => {
             showProgress: false,
             totalProducts: products,
             refresh: false,
-            allowFetch
+            allowFetch,
           };
-          console.log('currentState---- reduer--', currentState)
         }
         //Handling result when paginated ie, when pagenumber is more than 0, need to concat the result
         else if (pageNumber > 1) {
@@ -61,6 +67,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         showProgress: false,
         allowFetchNotifications: false
+      };
+      break;
+    case FETCH_CATEGORIES_REQUEST_SUCCESS:
+      currentState = {
+        ...state,
+        allCategories: action.payload
       };
       break;
     default: break;

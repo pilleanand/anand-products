@@ -20,7 +20,7 @@ const configureStore = () => {
     storage: AsyncStorage
   };
   const persistedReducer = persistReducer(persistConfig, reducers);
-  let store = createStore(persistedReducer, enhancer);
+  let store = createStore(reducers, enhancer);
   persistStore(store, null, () => {
   });
   sagaMiddleware.run(sagas);
