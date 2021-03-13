@@ -6,6 +6,7 @@ import {
   fetchCategoriesRequestAction,
   fetchProductsWithPaginationRequestAction
 } from '../../actions/ProductActions';
+import ProductFilter from './ProductFilter';
 
 class MyProducts extends Component {
 
@@ -63,34 +64,47 @@ class MyProducts extends Component {
 
   render(){
     console.log('allCategories---',this.props.allCategories)
+    // console.log('products---',this.props.products)
+
     return (
-      <FlatList
-        data={this.props.products}
-        extraData={this.state.pageNumber}
-        ref={(ref) => { this.flatListRef = ref; }}
-        onEndReachedThreshold={0.5}
-        onEndReached={({ distanceFromEnd }) => {
-          if (distanceFromEnd >= 0 && this.props.allowFetch) {
-            let pageNumber = this.state.pageNumber + 1;
-            this.setState({
-              pageNumber
-            }, () => {
-              this.fetchProductsWithPagination(pageNumber);
-            });
+      <View style={styles.containerViewStyle}>
+        <View style={styles.headerViewStyle}>
+          <Text style={styles.headerTextStyle}>Products</Text>
+        </View>
+        <ProductFilter />
+        <FlatList
+          data={this.props.products}
+          extraData={this.state.pageNumber}
+          ref={(ref) => { this.flatListRef = ref; }}
+          style={styles.flatListStyle}
+          onEndReachedThreshold={0.5}
+          onEndReached={({ distanceFromEnd }) => {
+            if (distanceFromEnd >= 0 && this.props.allowFetch) {
+              let pageNumber = this.state.pageNumber + 1;
+              this.setState({
+                pageNumber
+              }, () => {
+                this.fetchProductsWithPagination(pageNumber);
+              });
+            }
           }
-        }
-        }
-        onRefresh={this.fetchProductsWithPagination}
-        refreshing={this.props.refresh}
-        renderItem={this.renderEachProduct}
-        ListEmptyComponent={this.renderEmptyProductsList}
-        keyExtractor={(item) => `product_key_${(Math.random() * 1000)}`}
-      />
+          }
+          onRefresh={this.fetchProductsWithPagination}
+          refreshing={this.props.refresh}
+          renderItem={this.renderEachProduct}
+          ListEmptyComponent={this.renderEmptyProductsList}
+          keyExtractor={(item) => `product_key_${(Math.random() * 1000)}`}
+        />
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  containerViewStyle: { flex: 1},
+  headerViewStyle: { alignItems: 'center', backgroundColor: '#E75480', padding: 20 },
+  headerTextStyle: { color: 'white', fontSize: 20, fontWeight: 'bold' },
+  flatListStyle:{ flex: 1 },
   emptyProductsContainerViewStyle: {
     flex: 1,
     justifyContent: 'center',
