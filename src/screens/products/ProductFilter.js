@@ -216,7 +216,8 @@ const styles = StyleSheet.create({
   categoryNameTxtStyle: {
     color: '#333',
     fontSize: 16,
-    marginLeft: 10
+    marginLeft: 10,
+    width: '90%'
   }
 });
 

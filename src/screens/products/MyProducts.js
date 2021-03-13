@@ -22,8 +22,9 @@ class MyProducts extends Component {
     this.props.fetchCategories();
   }
 
-  refreshProducsta = () => {
-    const pageNumber = 0;
+  refreshProducts = () => {
+    this.props.fetchCategories();
+    const pageNumber = 1;
     this.flatListRef.scrollToOffset({ animated: true, offset: 0 });
     this.setState({
       pageNumber
@@ -63,8 +64,6 @@ class MyProducts extends Component {
   }
 
   render(){
-    // console.log('products---',this.props.products)
-
     return (
       <View style={styles.containerViewStyle}>
         <View style={styles.headerViewStyle}>
@@ -88,7 +87,7 @@ class MyProducts extends Component {
             }
           }
           }
-          onRefresh={this.fetchProductsWithPagination}
+          onRefresh={this.refreshProducts}
           refreshing={this.props.refresh}
           renderItem={this.renderEachProduct}
           ListEmptyComponent={this.renderEmptyProductsList}
