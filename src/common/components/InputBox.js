@@ -3,7 +3,12 @@ import { View, Input, Label, Item } from "native-base";
 import { _ScrollView, Text } from "react-native";
 import PropTypes from "prop-types";
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import { APPROX_ALTO_COLOR, RED_50_ALTO_COLOR, SNOW_COLOR } from "../../constants/Colors";
+import {
+  APPROX_ALTO_COLOR,
+  GREY_COLOR,
+  RED_50_ALTO_COLOR,
+  SNOW_COLOR
+} from "../../constants/Colors";
 
 const InputBox = (props) => {
   const {
@@ -64,7 +69,7 @@ const InputBox = (props) => {
             style={[
               {
                 paddingLeft: 10,
-                color: 'grey',
+                color: GREY_COLOR,
                 paddingTop: multiLine ? "4%" : 0,
               },
               props.inputStyle ? props.inputStyle : {},
@@ -83,7 +88,7 @@ const InputBox = (props) => {
           <FontAwesome
             name='search'
             size={20}
-            color='grey'
+            color={GREY_COLOR}
           />
         </Item>
       </View>

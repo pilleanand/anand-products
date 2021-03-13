@@ -9,7 +9,8 @@ import {
   BLACK_17_COLOR,
   GREEN_COLOR,
   DIM_GREY_COLOR,
-  COCONUT_CREAM_COLOR
+  COCONUT_CREAM_COLOR,
+  GREY_COLOR
 } from '../../constants/Colors';
 
 const EachProductCard = (props) => {
@@ -37,7 +38,7 @@ const EachProductCard = (props) => {
       <View style={styles.categoriesContainerViewStyle}>
         {product.categories.map((category, index) => (
           <View key={`category_key_${product.id}${category.id}`} style={styles.priceColumnViewStyle}>
-            <MaterialIcons name='category' size={18} color='grey' />
+            <MaterialIcons name='category' size={18} color={GREY_COLOR} />
             <Text style={styles.categoryNameTxtStyle} numberOfLines={1} ellipsizeMode='tail'>{category.name}</Text>
           </View>
         ))}
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
   categoryNameTxtStyle: {
     fontSize: 12,
     marginLeft: 5,
-    color: 'grey'
+    color: GREY_COLOR
   },
   categoriesContainerViewStyle: {
     marginTop: 5,
