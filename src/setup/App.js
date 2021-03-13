@@ -8,9 +8,7 @@ import MyProducts from '../screens/products/MyProducts';
 import { APP_THEME_COLOR } from '../constants/Colors';
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
-const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
-
-export const store = configureStore();
+const store = configureStore();
 
 function AppContainer(props) {
 
@@ -21,6 +19,8 @@ function AppContainer(props) {
   }, []);
 
   const checkNetworkStatus = () => {
+    // simple effort to just to show coonected to internet or not
+    //  to show user when internet is jumbled
     NetInfo.addEventListener(connectionInfo => {
       connectionInfo.isConnected ?
         showToastMessage('Connected to Internet')

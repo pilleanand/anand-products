@@ -15,10 +15,13 @@ const configureStore = () => {
       realtime: true
     })
   );
+
   const persistConfig = {
     key: 'root',
     storage: AsyncStorage
   };
+
+  // not using the persist store in this project
   const persistedReducer = persistReducer(persistConfig, reducers);
   let store = createStore(reducers, enhancer);
   persistStore(store, null, () => {
