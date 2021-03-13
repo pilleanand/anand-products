@@ -1,4 +1,3 @@
-import lodash from 'lodash';
 import {
   FETCH_CATEGORIES_REQUEST_SUCCESS,
   FETCH_PRODUCTS_PAGINATION_REQUEST,
@@ -7,12 +6,16 @@ import {
   FILTER_CATEGORIES_BY_SEARCH_TERM,
   FILTER_PRODUCTS_BY_SELECTED_CATEGORIES
 } from "../constants/ProductActionTypes";
-import { filterCategoriesBySearchSearchTerm, filterProductsBySelectedCategories } from '../helpers/Product.helpers';
+import {
+  filterCategoriesBySearchSearchTerm,
+  filterProductsBySelectedCategories
+} from '../helpers/Product.helpers';
 
 const INITIAL_STATE = {
   totalProducts: [],
   filteredProducts: [],
   fliteredCategoriesByText: [],
+  selectedFilters:[],
   allCategories: [],
   showProgress: false,
   refresh: true,
@@ -35,11 +38,12 @@ export default (state = INITIAL_STATE, action) => {
       if (Array.isArray(products) && products.length !== 0) {
         const allowFetch = products.length < 20 ? false : true;
         if (pageNumber === 1) {
+          let filteredProducts = filterProductsBySelectedCategories(products, state.selectedFilters);
           currentState = {
             ...state,
             showProgress: false,
             totalProducts: products,
-            filteredProducts: products,
+            filteredProducts,
             refresh: false,
             allowFetch,
           };
@@ -47,11 +51,12 @@ export default (state = INITIAL_STATE, action) => {
         //Handling result when paginated ie, when pagenumber is more than 0, need to concat the result
         else if (pageNumber > 1) {
           let totalProducts = state.totalProducts.concat(products);
+          let filteredProducts = filterProductsBySelectedCategories(totalProducts, state.selectedFilters);
           currentState = {
             ...state,
             showProgress: false,
             totalProducts: totalProducts,
-            filteredProducts: totalProducts,
+            filteredProducts,
             refresh: false,
             allowFetch
           }
@@ -93,7 +98,8 @@ export default (state = INITIAL_STATE, action) => {
       let filteredProducts = filterProductsBySelectedCategories(state.totalProducts, action.payload)
       currentState = {
         ...state,
-        filteredProducts
+        filteredProducts,
+        selectedFilters: action.payload
       };
       break;
     default: break;

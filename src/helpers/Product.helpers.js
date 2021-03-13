@@ -1,13 +1,17 @@
 import lodash from 'lodash';
 
 export const filterProductsBySelectedCategories = (products, categories) => {
-  var results = lodash.filter(products, function (product) {
+  const filteredProducts = [];
+  if (categories.length === 0) {
+    return products
+  }
+ lodash.filter(products, function (product) {
     var productMatch = lodash(product.categories).intersectionBy(categories, 'id').map('id').value();
     if (productMatch.length > 0) {
-      return product
+      filteredProducts.push(product);
     }
   });
-  return results;
+  return filteredProducts;
 }
 
 export const filterCategoriesBySearchSearchTerm = (categories, searchTerm) => {
