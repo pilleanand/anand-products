@@ -1,26 +1,33 @@
-import React,{ Component } from "react";
-import { View, StyleSheet, Text, Modal } from 'react-native';
-import { Button, Icon } from 'native-base';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import React, { Component } from "react";
+import { View, StyleSheet, Text, Modal, Platform, ScrollView } from 'react-native';
+import { Button } from 'native-base';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux';
+import InputBox from "../../common/components/InputBox";
 
 class ProductFilter extends Component {
-    constructor(props){
-      super(props);
-      this.state = {
-        showModal: false
-      }
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: true,
+      categorySearchText: ""
     }
+  }
 
 
-    onModalClosePress = () => {
-      this.setState({ showModal: false });
-    }
+  onModalClosePress = () => {
+    this.setState({ showModal: false });
+  }
 
-    openFilterModal = () => {
-      this.setState({ showModal: true });
-    }
+  openFilterModal = () => {
+    this.setState({ showModal: true });
+  }
+
+  onFilterSearchBoxTextChange = (value) => {
+    this.setState({ categorySearchText: value })
+  }
 
   getModalViewWithCategories = () => (
     <Modal
@@ -28,66 +35,81 @@ class ProductFilter extends Component {
       animationType="slide"
       transparent={true}
       onRequestClose={this.onModalClosePress}>
-      <View style={{
-         marginTop: 100,
-         marginBottom:40,
-        marginHorizontal: 30,
-         backgroundColor: "white",
-         borderRadius: 20,
-         padding: 35,
-         alignItems: "center",
-         justifyContent:'center',
-        flex: 1,
-         shadowColor: "#000",
-         shadowOffset: {
-           width: 0,
-           height: 2
-         },
-         shadowOpacity: 0.25,
-         shadowRadius: 3.84,
-         elevation: 5
-      }}>
-        <View style={{ backgroundColor: 'white', flex: 1, padding: 20 }}>
-          <View>
-            <CheckBox
-              title='Click Here1'
-              checked={this.state.checked}
+      <View style={styles.modalInnerViewStyle}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <InputBox
+            name="placeholder"
+            value={this.state.categorySearchText}
+            placeholder="|Search & Select your category"
+            onChangeText={this.onFilterSearchBoxTextChange}
+            keyboardType='default'
+            returnKeyType="done"
+          />
+          <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+            <FontAwesome onPress={this.onModalClosePress}
+              name='check'
+              size={35}
+              color='green'
             />
-            <CheckBox
-              title='Click Here2'
-              checked={this.state.checked}
-            />
-      </View>
+          </View>
         </View>
+        <View style={{ flexDirection: 'row', marginTop: 10, marginHorizontal: 10 }}>
+          <View style={{ flex: 1, alignItems: 'flex-start' }}>
+            <Text style={{ color: 'blue', fontSize: 16 }}>SELECT ALL</Text>
+          </View>
+          <View style={{ flex: 1, alignItems: 'flex-end' }}>
+            <Text style={{ color: 'red', fontSize: 16 }}>CLEAR</Text>
+          </View>
+        </View>
+        <ScrollView>
+          <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+            {this.props.allCategories.map((category) => (
+              <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
+                <CheckBox
+                  onCheckColor="blue"
+                  checked={true}
+                />
+                <Text style={{ color: '#333', fontSize: 16, marginLeft: 5 }}>{category.name}</Text>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       </View>
     </Modal>
   );
 
-    render(){
-      return(
-        <View style={styles.containerViewStyle}>
-          <View style={{ alignItems: 'flex-end', flex: 1, flexDirection: 'row-reverse', marginBottom: 50, marginTop:15 }}>
-            <Button iconLeft dark onPress={this.openFilterModal} style={{ marginRight: 20 , paddingHorizontal:20}}>
-              <Ionicons name='filter'  size={27} color='white' fontSize={30} />
-              <Text style={{ color: 'white', fontSize: 20, marginLeft: 5 }}>Filter</Text>
+  render() {
+    return (
+      <View style={styles.containerViewStyle}>
+        <View style={{ alignItems: 'flex-end', flex: 1, flexDirection: 'row-reverse', marginBottom: 50, marginTop: 15 }}>
+          <Button iconLeft dark onPress={this.openFilterModal} style={{ marginRight: 20, paddingHorizontal: 20 }}>
+            <Ionicons name='filter' size={27} color='white' fontSize={30} />
+            <Text style={{ color: 'white', fontSize: 20, marginLeft: 5 }}>Filter</Text>
           </Button>
-          </View>
-          {this.getModalViewWithCategories()}
         </View>
-      );
-    }
+        {this.getModalViewWithCategories()}
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   containerViewStyle: {},
-  headerViewStyle: { alignItems: 'center', backgroundColor: '#E75480', padding: 20 },
-  headerTextStyle: { color: 'white', fontSize: 20, fontWeight: 'bold' },
-  flatListStyle:{ flex: 1 },
-  emptyProductsContainerViewStyle: {
+  modalInnerViewStyle:{
+    marginTop: Platform.select({ android: 80, ios: 100 }),
+    marginBottom: Platform.select({ android: 20, ios: 40 }),
+    marginHorizontal: Platform.select({ android: 20, ios: 30 }),
+    backgroundColor: "white",
+    borderRadius: 20,
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 30
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
   }
 });
 
@@ -96,8 +118,6 @@ const mapStateToProps = ({ product }) => ({
 });
 
 const mapDispactchToProps = dispatch => ({
-  fetchProductsWithPagination: (pageNumber) => dispatch(fetchProductsWithPaginationRequestAction(pageNumber)),
-  fetchCategories: () => dispatch(fetchCategoriesRequestAction())
 });
 
 export default connect(mapStateToProps, mapDispactchToProps)(ProductFilter);
