@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import EachProductCard from './EachProductCard';
+import ProductFilter from './ProductFilter';
 import {
   fetchCategoriesRequestAction,
   fetchProductsWithPaginationRequestAction
 } from '../../actions/ProductActions';
-import ProductFilter from './ProductFilter';
 
-class MyProducts extends Component {
+class MyProducts extends PureComponent {
 
   constructor(props){
     super(props);
@@ -32,7 +32,6 @@ class MyProducts extends Component {
       this.fetchProductsWithPagination(1);
     });
   }
-
 
   fetchProductsWithPagination = (pageNumber) => {
     this.props.fetchProductsWithPagination(pageNumber);
