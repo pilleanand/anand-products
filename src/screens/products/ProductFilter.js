@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux';
 import InputBox from "../../common/components/InputBox";
+import { filterCategoriesBySearchSearchTermAction } from "../../actions/ProductActions";
 
 class ProductFilter extends Component {
   constructor(props) {
@@ -26,7 +27,8 @@ class ProductFilter extends Component {
   }
 
   onFilterSearchBoxTextChange = (value) => {
-    this.setState({ categorySearchText: value })
+    this.props.filterCategories(value);
+    this.setState({ categorySearchText: value });
   }
 
   getModalViewWithCategories = () => (
@@ -63,8 +65,8 @@ class ProductFilter extends Component {
         </View>
         <ScrollView>
           <View style={{ marginTop: 20, marginHorizontal: 10 }}>
-            {this.props.allCategories.map((category) => (
-              <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
+            {this.props.allCategories.map((category, index) => (
+              <View key={`category_key${index}`} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
                 <CheckBox
                   onCheckColor="blue"
                   checked={true}
@@ -114,10 +116,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ product }) => ({
-  allCategories: product.allCategories
+  allCategories: product.fliteredCategoriesByText
 });
 
 const mapDispactchToProps = dispatch => ({
+  filterCategories: (search) => dispatch(filterCategoriesBySearchSearchTermAction(search))
 });
 
 export default connect(mapStateToProps, mapDispactchToProps)(ProductFilter);

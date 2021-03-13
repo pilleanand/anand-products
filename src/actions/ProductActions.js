@@ -4,7 +4,8 @@ import {
   FETCH_PRODUCTS_PAGINATION_REQUEST_FAIL,
   FETCH_CATEGORIES_REQUEST,
   FETCH_CATEGORIES_REQUEST_SUCCESS,
-  FETCH_CATEGORIES_REQUEST_FAIL
+  FETCH_CATEGORIES_REQUEST_FAIL,
+  FILTER_CATEGORIES_BY_SEARCH_TERM
 } from "../constants/ProductActionTypes";
 
 export const fetchProductsWithPaginationRequestAction = (pageNumber) => ({
@@ -32,4 +33,9 @@ export const fetchCategoriesRequestSuccessAction = (payload) => ({
 
 export const fetchCategoriesRequestFailureAction = (error) => ({
   type: FETCH_CATEGORIES_REQUEST_FAIL,
+});
+
+export const filterCategoriesBySearchSearchTermAction = (searchTerm) => ({
+  type: FILTER_CATEGORIES_BY_SEARCH_TERM,
+  payload: searchTerm
 });
