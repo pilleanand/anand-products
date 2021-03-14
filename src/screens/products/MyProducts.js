@@ -23,11 +23,29 @@ class MyProducts extends PureComponent {
     this.props.fetchCategories();
   }
 
-  refreshProducts = () => {
-    // pull to refresh is disabled if filters are already allplied
-    if (this.props.fliteredCategoriesByText?.length > 0) {
-      return;
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.products !== prevProps.products) {
+      this.paginateWhenFilterApplied();
     }
+  }
+
+  paginateWhenFilterApplied = () => {
+    //When the filtered items are less than 4 the automtic pagination is not trigered 
+    // since it does not react to end so manual api is done
+    //this is corner case for which the data for the filtered items is not availbe in the first 20 
+    // set and avialbe somewhere around greater than 20
+    if (this.props.allowFetch && this.props.products.length <= 3
+      && this.props.fliteredCategoriesByText?.length > 0) {
+      let pageNumber = this.state.pageNumber + 1;
+      this.setState({
+        pageNumber
+      }, () => {
+        this.fetchProductsWithPagination(pageNumber);
+      });
+    }
+  }
+
+  refreshProducts = () => {
     const pageNumber = 1;
     this.flatListRef.scrollToOffset({ animated: true, offset: 0 });
     this.setState({
