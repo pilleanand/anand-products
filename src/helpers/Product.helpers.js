@@ -7,7 +7,7 @@ export const filterProductsBySelectedCategories = (products, categories) => {
     return products;
   }
   lodash.filter(products, function (product) {
-    // productMatch will do a set A - B which is equal to the all the
+    // productMatch will do a set A intersection B which is equal to the all the
     //  categories in the product categories are checked 
     // and selected from the categories filtered on id 
     var productMatch = lodash(product.categories).intersectionBy(categories, 'id').map('id').value();

@@ -57,7 +57,7 @@ class ProductFilter extends Component {
   }
 
   onSelectAllTextPress = () => {
-    let selectedCategories = this.props.allCategories;
+    let selectedCategories = JSON.parse(JSON.stringify(this.props.allCategories));
     this.setState({ selectedCategories });
   }
 
@@ -70,12 +70,18 @@ class ProductFilter extends Component {
     return this.props.allCategories.map((category,) => {
       let isAlreadySelected = lodash.find(selectedCategories, { id: category.id });
       return (
-        <ListItem key={`category_key${category.id}`} onPress={() => { this.onCheckboxPress(category, 'listItem') }}>
+        <ListItem key={`category_key${category.id}`}
+          onPress={() => { this.onCheckboxPress(category, 'listItem') }}>
           <View style={styles.checkboxViewStyle}>
             <CheckBox
               onCheckColor={BLUE_COLOR}
               value={isAlreadySelected ? true : false}
               style={styles.checkboxStyle}
+              onValueChange={() => {
+                if (Platform.OS === 'android') {
+                  this.onCheckboxPress(category, 'listItem')
+                }
+              }}
               boxType='square'
             />
             <Text style={styles.categoryNameTxtStyle}>{category.name}</Text>
